@@ -201,6 +201,7 @@ public class BrokenLineChart extends View{
             float x=mXPoint.get(i);
             float y=mYPoint.get(i);
             mPath.lineTo(x,y);
+            Log.e("x,y",x+","+y);
 
         }
         mPath.close();

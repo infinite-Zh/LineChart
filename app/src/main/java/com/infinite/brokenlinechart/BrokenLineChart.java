@@ -209,7 +209,6 @@ public class BrokenLineChart extends View{
                 mPath.lineTo(x,y);
             }
             canvas.drawCircle(x,y,5,mTextPaint);
-            Log.e("x,y",x+","+y);
 
         }
         canvas.drawPath(mPath,mLinePaint);

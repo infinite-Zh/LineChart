@@ -29,7 +29,7 @@ public class BrokenLineChart extends View{
     /**
      * Y轴刻度数量
      */
-    private static final int Y_DIAL_NUM=11;
+    private static final int Y_DIAL_NUM=10;
 
     private int mWidth,mHeight;
 
@@ -148,7 +148,8 @@ public class BrokenLineChart extends View{
                 mPath.close();
                 canvas.drawPath(mPath,mXAxisPaint);
                 String text=String.valueOf(mXValues.get(i).intValue());
-                canvas.drawText(text, xPoint-getTextWidth(text, mTextPaint)/2,
+                mTextPaint.setTextAlign(Paint.Align.LEFT);
+                canvas.drawText(text, xPoint-mTextPaint.measureText(text)/2,
                                 (float) (mHeight+getTextHeight(text, mTextPaint)*1.2), mTextPaint);
                 mXPoint.add(xPoint);
             }
@@ -175,8 +176,9 @@ public class BrokenLineChart extends View{
         //y轴刻度间数量差，最大数对数量级取模，再加一个数量级的然后除以y轴刻度的个数，例如最大数是180，数量级是100，公式就是（1*100+100）/10=20
         float yAxis=mHeight/Y_DIAL_NUM;
         mTextPaint.setTextAlign(Paint.Align.CENTER);
-        for(int i=0;i<Y_DIAL_NUM;i++){
-            mPath.reset();
+        mPath.reset();
+
+        for(int i=0;i<=Y_DIAL_NUM;i++){
             mPath.moveTo(0,mHeight-yAxis*i);
             mPath.lineTo(DIAL_HEIGHT,mHeight-yAxis*i);
             mPath.close();
@@ -185,8 +187,9 @@ public class BrokenLineChart extends View{
             if (i==0){
                 continue;
             }
+            mTextPaint.setTextAlign(Paint.Align.RIGHT);
             canvas.drawText(text,
-                            -getTextWidth(text, mTextPaint), mHeight-yAxis*i+getTextHeight(text, mTextPaint)/2, mTextPaint);
+                            -(float)5, mHeight-yAxis*i+getTextHeight(text, mTextPaint)/2, mTextPaint);
         }
         mActualHeight=yAxis*Y_DIAL_NUM;
         String label="单位:"+magnitude;
@@ -200,17 +203,23 @@ public class BrokenLineChart extends View{
         for(int i=0;i<mElements.size();i++){
             float x=mXPoint.get(i);
             float y=mYPoint.get(i);
-            mPath.lineTo(x,y);
+            if (i==0){
+                mPath.moveTo(x,y);
+            }else {
+                mPath.lineTo(x,y);
+            }
+            canvas.drawCircle(x,y,5,mTextPaint);
             Log.e("x,y",x+","+y);
 
         }
-        mPath.close();
         canvas.drawPath(mPath,mLinePaint);
+        mPath.close();
+
     }
 
     private void calculateYPoints(){
         BigDecimal height=new BigDecimal(mActualHeight);
-        BigDecimal ratio=height.divide(new BigDecimal(Y_DIAL_NUM), 4, RoundingMode.DOWN);
+        BigDecimal ratio=height.divide(new BigDecimal(magnitude*(m+1)), 8, RoundingMode.DOWN);
         for(int i=0;mElements!=null&&i<mElements.size();i++){
             ILineElement ele=mElements.get(i);
             mYPoint.add(mActualHeight-ratio.multiply(new BigDecimal(ele.getYValue())).floatValue());

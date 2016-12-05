@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
             float x= i;
             Random random=new Random();
 
-           float y= (float) (int)(Math.random()*10);
+           float y= (float) (int)(Math.random()*100);
             TestEntity entity=new TestEntity(x,y);
             mEle.add(entity);
             Log.e("collection",y+"");

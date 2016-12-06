@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -143,13 +144,13 @@ public class BrokenLineChart extends View{
             for(int i=0;i<mElements.size();i++){
                 float xPoint=i*xRatio;
                 mPath.reset();
-                mPath.moveTo(xPoint,mHeight);
-                mPath.lineTo(xPoint,mHeight-DIAL_HEIGHT);
+                mPath.moveTo(xPoint-mLeftOffset,mHeight);
+                mPath.lineTo(xPoint-mLeftOffset,mHeight-DIAL_HEIGHT);
                 mPath.close();
                 canvas.drawPath(mPath,mXAxisPaint);
                 String text=String.valueOf(mXValues.get(i).intValue());
                 mTextPaint.setTextAlign(Paint.Align.LEFT);
-                canvas.drawText(text, xPoint-mTextPaint.measureText(text)/2,
+                canvas.drawText(text, xPoint-mTextPaint.measureText(text)/2-mLeftOffset,
                                 (float) (mHeight+getTextHeight(text, mTextPaint)*1.2), mTextPaint);
                 mXPoint.add(xPoint);
             }
@@ -204,11 +205,11 @@ public class BrokenLineChart extends View{
             float x=mXPoint.get(i);
             float y=mYPoint.get(i);
             if (i==0){
-                mPath.moveTo(x,y);
+                mPath.moveTo(x-mLeftOffset,y);
             }else {
-                mPath.lineTo(x,y);
+                mPath.lineTo(x-mLeftOffset,y);
             }
-            canvas.drawCircle(x,y,5,mTextPaint);
+            canvas.drawCircle(x-mLeftOffset,y,5,mTextPaint);
 
         }
         canvas.drawPath(mPath,mLinePaint);
@@ -287,5 +288,34 @@ public class BrokenLineChart extends View{
         Rect rect=new Rect();
         paint.getTextBounds(text,0,text.length(),rect);
         return rect.width();
+    }
+
+
+    private int mLastX;
+    /**
+     * 画x轴和画线时，左侧的偏移量，即手指滑动的总距离
+     */
+    private float mLeftOffset;
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int x= (int) event.getX();
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                mLastX= (int) event.getX();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                mLeftOffset+=-(x-mLastX);
+                invalidate();
+                mLastX=x;
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
     }
 }

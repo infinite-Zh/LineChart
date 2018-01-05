@@ -22,10 +22,9 @@ public class MainActivity extends AppCompatActivity {
             float x= i;
             Random random=new Random();
 
-           float y= (float) (int)(Math.random()*100);
+           float y= (float) (int)(Math.random()*1000);
             TestEntity entity=new TestEntity(x,y);
             mEle.add(entity);
-            Log.e("collection",y+"");
         }
 
         chart.setData(mEle);

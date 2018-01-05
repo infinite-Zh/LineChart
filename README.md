@@ -7,5 +7,10 @@
 ----
 
 update：
-* 添加了左右滑动功能/Users/xz/github/LineChart/README.md
+
+* 添加动画效果
+* 去掉了左右滑动功能
+
+---
+* 添加了左右滑动功能
 

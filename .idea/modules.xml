@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BrokenLineChart.iml" filepath="$PROJECT_DIR$/BrokenLineChart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LineChart.iml" filepath="$PROJECT_DIR$/LineChart.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

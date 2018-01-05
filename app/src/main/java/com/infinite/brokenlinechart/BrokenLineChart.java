@@ -143,6 +143,9 @@ public class BrokenLineChart extends View{
             int xRatio= (int) Math.ceil(mWidth/xIndex);
             for(int i=0;i<mElements.size();i++){
                 float xPoint=i*xRatio;
+                if (xPoint-mLeftOffset<0){
+                    mLeftOffset=0;
+                }
                 mPath.reset();
                 mPath.moveTo(xPoint-mLeftOffset,mHeight);
                 mPath.lineTo(xPoint-mLeftOffset,mHeight-DIAL_HEIGHT);
@@ -204,6 +207,10 @@ public class BrokenLineChart extends View{
         for(int i=0;i<mElements.size();i++){
             float x=mXPoint.get(i);
             float y=mYPoint.get(i);
+            if (x-mLeftOffset<0){
+                mLeftOffset=0;
+            }
+
             if (i==0){
                 mPath.moveTo(x-mLeftOffset,y);
             }else {
@@ -304,9 +311,9 @@ public class BrokenLineChart extends View{
                 mLastX= (int) event.getX();
                 break;
             case MotionEvent.ACTION_MOVE:
-                mLeftOffset+=-(x-mLastX);
-                invalidate();
-                mLastX=x;
+//                mLeftOffset+=-(x-mLastX);
+//                invalidate();
+//                mLastX=x;
                 break;
             case MotionEvent.ACTION_UP:
                 break;

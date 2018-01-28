@@ -59,6 +59,7 @@ public class BrokenLineChart extends View {
      */
     private List<Float> mYPoint = new ArrayList<>();
 
+
     public BrokenLineChart(Context context) {
         this(context, null);
     }
@@ -133,6 +134,21 @@ public class BrokenLineChart extends View {
         drawValue(canvas);
         calculateYPoints();
         drawLine(canvas);
+    }
+
+    public void setData(List<ILineElement> elements) {
+        mElements = elements;
+        float maxY = 0;
+        if (mElements != null && mElements.size() > 0) {
+            for (ILineElement element : mElements) {
+                if (element.getYValue() > maxY) {
+                    maxY = element.getYValue();
+                }
+                mXValues.add(element.getXValue());
+                mYValues.add(element.getYValue());
+            }
+        }
+        invalidate();
     }
 
     /**
@@ -258,6 +274,7 @@ public class BrokenLineChart extends View {
             float startX = mXPoint.get(i);
             float startY = mYPoint.get(i);
             float endX = 0, endY = 0;
+            final int mCurrentPos=i;
             if (i==0){
                 mLinePath.moveTo(startX,startY);
             }
@@ -282,6 +299,7 @@ public class BrokenLineChart extends View {
                     mEndY = (float) animation.getAnimatedValue(PROPERTY_Y);
                     invalidate();
                 }
+
             });
             animators.add(anim);
         }
@@ -345,20 +363,7 @@ public class BrokenLineChart extends View {
         return height;
     }
 
-    public void setData(List<ILineElement> elements) {
-        mElements = elements;
-        float maxY = 0;
-        if (mElements != null && mElements.size() > 0) {
-            for (ILineElement element : mElements) {
-                if (element.getYValue() > maxY) {
-                    maxY = element.getYValue();
-                }
-                mXValues.add(element.getXValue());
-                mYValues.add(element.getYValue());
-            }
-        }
-        invalidate();
-    }
+
 
     private float getTextHeight(String text, Paint paint) {
         Rect rect = new Rect();

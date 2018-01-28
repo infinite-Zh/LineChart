@@ -406,4 +406,6 @@ public class BrokenLineChart extends View {
     public void computeScroll() {
         super.computeScroll();
     }
+
+    // TODO: 2018/1/28 画点 
 }
